@@ -76,13 +76,14 @@ class MusicTrack
         @pauseOffset = position
       else if @stopped
         @stopped = false
-        @soundStart = position * 1000 + Date.now()
+        @soundStart = Date.now() - position * 1000
         @source.onended = @onended
         @source.start 0, position
       else
         @source.onended = null
         @source.stop()
         @initializeSource()
+        @soundStart = Date.now() - position * 1000
         @source.start 0, position
     else
       throw new Error "Cannot play further the end of the track"
