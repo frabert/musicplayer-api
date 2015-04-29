@@ -20,10 +20,11 @@ class MusicTrack
   soundStart: 0
   pauseOffset: 0
 
-  constructor: (@player, @path, @onended) ->
+  constructor: (@player, @path, @onended, @onloaded) ->
     requestAudio @path, (audioData) =>
       @player.ctx.decodeAudioData audioData, (decodedData) =>
         @buffer = decodedData
+        @onloaded()
         @initializeSource()
 
   initializeSource: ->
@@ -95,6 +96,7 @@ class MusicPlayer
   ##############################################################################
   # Events                                                                     #
   ##############################################################################
+
   onSongFinished: (path) ->
     undefined
 
@@ -105,6 +107,9 @@ class MusicPlayer
     undefined
 
   onPlayerPaused: ->
+    undefined
+
+  onTrackLoaded: (path) ->
     undefined
 
   onTrackAdded: (path) ->
@@ -169,18 +174,60 @@ class MusicPlayer
         playlist[0].play()
 
   addTrack: (path) ->
-    @playlist.push new MusicTrack(this, path, =>
+    finishedCallback = =>
       @onSongFinished path
-      @playNext())
+      @playNext()
+
+    loadedCallback = =>
+      @onTrackLoaded path
+
+    @playlist.push new MusicTrack(this, path, finishedCallback, loadedCallback)
 
   insertTrack: (index, path) ->
-    @playlist.splice index, 0, new MusicTrack(this, path, =>
+    finishedCallback = =>
       @onSongFinished path
-      @playNext())
+      @playNext()
+
+    loadedCallback = =>
+      @onTrackLoaded path
+
+    @playlist.splice index, 0,
+      new MusicTrack(this, path, finishedCallback, loadedCallback)
 
   removeTrack: (index) ->
     song = @playlist.splice index, 1
     @onTrackRemoved song.path
+
+  replaceTrack: (index, path) ->
+    finishedCallback = =>
+      @onSongFinished path
+      @playNext()
+
+    loadedCallback = =>
+      @onTrackLoaded path
+
+    newTrack = new MusicTrack(this, path, finishedCallback, loadedCallback)
+    oldTrack = @playlist.splice index, 1, newTrack
+    @onTrackRemoved oldTrack.path
+
+  getSongDuration: (index) ->
+    if @playlist.length is 0
+      return 0
+    else
+      if index?
+        return playlist[index]?.getDuration()
+      else
+        return playlist[0].getDuration()
+
+  getSongPosition: ->
+    if @playlist.length is 0
+      return 0
+    else
+      return @playlist[0].getPosition()
+
+  setSongPosition: (value) ->
+    unless @playlist.length is 0
+      @playlist[0].setPosition value
 
   removeAllTracks: ->
     @stop()

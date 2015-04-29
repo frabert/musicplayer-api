@@ -73,6 +73,11 @@ player.insertTrack( index, path )
 Adds the specified song in the specified position of the playlist.
 
 ```coffeescript
+player.replaceTrack( index, path )
+```
+Replaces the specified track with another one.
+
+```coffeescript
 player.removeTrack( index )
 ```
 Removes the specified song from the playlist.
@@ -81,6 +86,21 @@ Removes the specified song from the playlist.
 player.removeAllTracks()
 ```
 Clears the playlist and stops the playback.
+
+```coffeescript
+player.getSongDuration( index )
+```
+Returns the duration in seconds of the specifed song. If no index is provided, 0 is assumed.
+
+```coffeescript
+player.getSongPosition()
+```
+Returns the playing position of the current song. Returns 0 if the playlist is empty or the song hasn't started yet.
+
+```coffeescript
+player.setSongPosition( position )
+```
+Sets the playing position of the current song, expressed in seconds from the beginning. If the playback is stopped before the call, the player is started.
 
 #### Events
 ##### onSongFinished
@@ -99,6 +119,8 @@ Called when a track is added to the playlist.
 *NOTE:* Passes the track's path as an argument.
 ##### onTrackRemoved
 Called when a track is removed from the playlist.
+##### onTrackLoaded
+Called when a track has finished loading its contents.
 
 *NOTE:* Passes the track's path as an argument.
 ##### onVolumeChanged
