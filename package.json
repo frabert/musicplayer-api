@@ -1,6 +1,6 @@
 {
   "name": "musicplayer-api",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Simple Audio API wrapper",
   "main": "lib/musicplayer-api.js",
   "scripts": {
