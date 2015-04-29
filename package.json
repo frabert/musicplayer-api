@@ -6,6 +6,13 @@
   "scripts": {
     "prepublish": "grunt"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frabert/musicplayer-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/frabert/musicplayer-api/issues"
+  },
   "keywords": [
     "audio",
     "audio-api",
