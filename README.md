@@ -1,6 +1,11 @@
 # musicplayer-api
 **musicplayer-api** provides a simple way to implement a gapless music player using Web Audio API. It was originally meant to be used in environments such as [electron](https://github.com/atom/electron) but may eventually work in a browser.
 
+Add it to your package with
+```
+npm install musicplayer-api
+```
+
 ## Example of usage
 ```coffeescript
 MusicPlayer = require('musicplayer-api').MusicPlayer
